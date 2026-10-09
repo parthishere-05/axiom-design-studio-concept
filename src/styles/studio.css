@@ -1,0 +1,251 @@
+/**
+ * Studio and Approach — the two sections that speak in the studio's own voice.
+ *
+ * ── one language, not two ───────────────────────────────────────────────────
+ * Both sections are built from the primitives already established: the same
+ * ground, the same hairlines, the same tracked labels, the same accent index
+ * and the same three-part caption (index · dash · label) that the hero eyebrow,
+ * the section header and every Work tile use. Neither section introduces a
+ * colour, a radius, a gradient, a card or a shadow. A register of the studio's
+ * disciplines and a register of its method are the same object at different
+ * lengths, so they are drawn the same way.
+ *
+ * The only new idea is the hairline-ruled register itself — a row list separated
+ * by 1px lines rather than boxed. That is already Work's caption logic taken up
+ * a level, and it is what lets a text section sit in the same document as six
+ * architectural plates without looking like a different website.
+ */
+
+/* ─── shared register rule ───────────────────────────────────────────────── */
+
+/* The short dash used between an index and its label, in both registers. */
+.studio__rule {
+  width: clamp(20px, 2vw, 34px);
+  height: 1px;
+  flex: none;
+  background: var(--line-strong);
+}
+
+/* ─── Studio ─────────────────────────────────────────────────────────────── */
+
+.studio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+/* Statement left, capability register right. The statement is the reason the
+   visitor is here, so it takes the larger share; the register sits opposite it
+   as a counterweight rather than as a sidebar — wide enough that its four rows
+   read as a block of equal weight to the sentence beside them. */
+.studio__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 1.2rem + 4vw, 6rem);
+  align-items: start;
+  border-top: 1px solid var(--line-soft);
+  padding-top: clamp(1.75rem, 1rem + 2.6vw, 3.25rem);
+}
+
+.studio__statement {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 1rem + 2.4vw, 3rem);
+}
+
+/* Display scale, not body scale. It sits under the section heading rather than
+   beside it, so it can be as large as the sentence needs without competing for
+   rank — this is the one line on the page that is allowed to run three or four
+   words to a line, which is what gives the section its presence. Sentence case,
+   like every other body line on the site: uppercase is reserved for headings. */
+.studio__lead {
+  margin: 0;
+  max-width: 17ch;
+  font-size: clamp(1.75rem, 0.7rem + 3.9vw, 4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: var(--track-display);
+  color: var(--text);
+  text-wrap: balance;
+}
+
+/* The outstanding-facts field. Set as a spec-sheet row so the studio's silence
+   reads as an unfilled field on a form, which is exactly what it is. */
+.studio__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding-top: clamp(1.1rem, 0.8rem + 1vw, 1.6rem);
+  border-top: 1px solid var(--line-soft);
+  max-width: 34ch;
+}
+
+.studio__detailsMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.studio__detailsValue {
+  margin: 0;
+  font-size: var(--size-small);
+  line-height: 1.45;
+  color: var(--text-faint);
+}
+
+/* ─── practice register ──────────────────────────────────────────────────── */
+
+.studio__practiceLabel {
+  margin: 0 0 clamp(1.1rem, 0.8rem + 1vw, 1.6rem);
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.studio__capabilities {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-soft);
+  list-style: none;
+}
+
+.studio__capability {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 0.5rem + 0.8vw, 1.25rem);
+  padding: clamp(0.95rem, 0.7rem + 0.9vw, 1.5rem) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* ─── Approach ───────────────────────────────────────────────────────────── */
+
+.approach {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+.approach__register {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-soft);
+  list-style: none;
+}
+
+/* Index · title · description, on one baseline-aligned row. The three columns
+   are proportional rather than equal: the number is an index and needs almost no
+   room, the title is a fixed sub-head, and the description takes everything left
+   over — which keeps the four titles in a single aligned column, so the
+   register can be read straight down.
+
+   The title column is deliberately wide and the description deliberately fills
+   its track. An earlier measure capped the description at 52ch, which on a
+   full-width sheet left the right third of every row empty: the row's rules
+   spanned the page while the words stopped halfway across it. */
+.approach__row {
+  display: grid;
+  grid-template-columns: minmax(0, 5rem) minmax(0, 27rem) minmax(0, 1fr);
+  gap: clamp(1rem, 0.6rem + 1.4vw, 2.5rem);
+  align-items: baseline;
+  padding: clamp(1.6rem, 1.1rem + 1.9vw, 2.9rem) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.approach__number {
+  margin: 0;
+  font-size: clamp(2.1rem, 1.2rem + 2.9vw, 3.9rem);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.approach__title {
+  margin: 0;
+  font-size: clamp(1.3rem, 0.85rem + 1.5vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.approach__description {
+  margin: 0;
+  max-width: 74ch;
+  font-size: var(--size-section-intro);
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-wrap: pretty;
+}
+
+/* ─── responsive ─────────────────────────────────────────────────────────── */
+
+/* Below the two-column split the statement and the register stack. The
+   statement keeps its own measure so it does not run the full width of a tablet. */
+@media (max-width: 900px) {
+  .studio__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(2.25rem, 1.4rem + 2.6vw, 3.25rem);
+  }
+
+  .studio__lead {
+    max-width: 30ch;
+  }
+}
+
+/* Register rows fold to two columns: the number and title stay side by side on
+   the first line, and the description runs the full measure beneath them. The
+   title is allowed to wrap rather than being shrunk to fit. */
+@media (max-width: 760px) {
+  .approach__row {
+    grid-template-columns: minmax(0, 3.5rem) minmax(0, 1fr);
+    gap: 0.35rem clamp(0.9rem, 0.6rem + 0.8vw, 1.25rem);
+    align-items: baseline;
+    padding: clamp(1.4rem, 1rem + 1.4vw, 2rem) 0;
+  }
+
+  .approach__description {
+    grid-column: 2;
+    margin-top: 0.6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* On a phone the statement is the first thing read, so it leads at a size
+     that stays comfortable rather than being cut to fit the heading. */
+  .studio__lead {
+    max-width: 26ch;
+  }
+
+  .studio__details {
+    max-width: none;
+  }
+}
+
+.studio__capabilityIndex {
+  min-width: 2.2ch;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The counterweight. Four short uppercase lines at sub-head size set against a
+   full-width display sentence: enough mass on the right that the two columns
+   read as a composition rather than as a statement with a list beside it. */
+.studio__capabilityName {
+  font-size: clamp(1.15rem, 0.85rem + 1vw, 1.9rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--text);
+}

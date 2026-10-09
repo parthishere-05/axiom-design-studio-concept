@@ -1,0 +1,20 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+
+# scratch folder used while inspecting source renders
+.insp
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and test output
+*.log
+coverage/
+playwright-report/
+test-results/

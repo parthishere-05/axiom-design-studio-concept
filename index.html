@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#07090C" />
+
+    <title>AXIOM Design Studio — Architecture, Interiors, Parametric Facades, Digital Fabrication</title>
+    <meta
+      name="description"
+      content="AXIOM Design Studio works across architecture, interiors, parametric facades and digital fabrication — designing environments shaped by structure, light and computation."
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!--
+      Only the first chapter hero is preloaded. The remaining chapter plates are
+      mounted on demand by the Hero, so the opening paint stays light.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/chapter-architecture-2400.jpg"
+      imagesrcset="/images/chapter-architecture-1200.jpg 1200w, /images/chapter-architecture-2400.jpg 2400w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

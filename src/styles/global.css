@@ -1,0 +1,225 @@
+/* ─── reset ───────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  overscroll-behavior: none;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── shell ───────────────────────────────────────────────────────────────── */
+
+.app {
+  position: relative;
+  min-height: 100svh;
+  isolation: isolate;
+}
+
+/* Before the entrance sequence has played, the copy and the detail plate hold
+   back so the frame, the logo and the navigation arrive first. */
+.app[data-intro-done='false'] {
+  --intro-offset: 760ms;
+}
+
+/* ─── entrance sequence ───────────────────────────────────────────────────── */
+
+@keyframes frame-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes frame-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes frame-draw-path {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ui-settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes line-rise {
+  from {
+    transform: translateY(112%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ─── architectural frame ─────────────────────────────────────────────────── */
+
+.frame {
+  position: fixed;
+  inset: var(--frame-inset);
+  z-index: var(--z-frame);
+  pointer-events: none;
+  color: var(--line);
+}
+
+.frame__edge {
+  position: absolute;
+  background: currentColor;
+}
+
+.frame__edge--top,
+.frame__edge--bottom {
+  left: var(--frame-chamfer);
+  right: var(--frame-chamfer);
+  height: 1px;
+  transform-origin: left;
+  animation: frame-draw-x 560ms var(--ease-out) 60ms both;
+}
+
+.frame__edge--top {
+  top: 0;
+}
+
+.frame__edge--bottom {
+  bottom: 0;
+  transform-origin: right;
+}
+
+.frame__edge--left,
+.frame__edge--right {
+  top: var(--frame-chamfer);
+  bottom: var(--frame-chamfer);
+  width: 1px;
+  transform-origin: top;
+  animation: frame-draw-y 560ms var(--ease-out) 60ms both;
+}
+
+.frame__edge--left {
+  left: 0;
+}
+
+.frame__edge--right {
+  right: 0;
+  transform-origin: bottom;
+}
+
+.frame__corner {
+  position: absolute;
+  width: var(--frame-chamfer);
+  height: var(--frame-chamfer);
+}
+
+.frame__corner--tl {
+  top: 0;
+  left: 0;
+}
+
+.frame__corner--tr {
+  top: 0;
+  right: 0;
+}
+
+.frame__corner--br {
+  bottom: 0;
+  right: 0;
+}
+
+.frame__corner--bl {
+  bottom: 0;
+  left: 0;
+}
+
+.frame__cornerPath {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: frame-draw-path 520ms var(--ease-out) 150ms both;
+}

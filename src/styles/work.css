@@ -1,0 +1,279 @@
+/* =========================================================
+   AXIOM — WORK SECTION
+   Independent editorial columns, bounded responsive layout
+   ========================================================= */
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* The overall 12-column coordinate system is represented by
+   a fixed 7:5 relationship. Both columns remain inside the
+   available content width. */
+
+.work__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  column-gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Each column owns its own vertical flow.
+   Portrait images therefore cannot push the other column's
+   next project down to the portrait's full height. */
+
+.work__col--left,
+.work__col--right {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+  gap: clamp(2rem, 4.5vw, 3.75rem);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------
+   PROJECT
+   --------------------------------------------------------- */
+
+.work__item {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+}
+
+.work__figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--work-caption-gap);
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------
+   IMAGE PLATE
+   --------------------------------------------------------- */
+
+.work__plate {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  aspect-ratio: var(--work-aspect);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.work__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: var(--work-focal);
+}
+
+/* ---------------------------------------------------------
+   CAPTION
+   --------------------------------------------------------- */
+
+.work__caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--work-caption-gap);
+  min-width: 0;
+  padding: var(--work-caption-padding);
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  border-top: 0;
+}
+
+.work__meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 0;
+  font-size: var(--size-work-meta);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.work__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  font-size: var(--size-work-number);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  border: 1px solid var(--line-strong);
+  border-radius: 0.25rem;
+}
+
+.work__rule {
+  width: 1px;
+  height: 1.25rem;
+  flex: none;
+  background: var(--line-strong);
+}
+
+.work__discipline {
+  min-width: 0;
+  font-size: var(--size-work-discipline);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.work__title {
+  margin: 0;
+  font-size: var(--size-work-title);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------
+   HOVER — presentation only, not a false link affordance
+   --------------------------------------------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+  .work__item:hover .work__plate {
+    border-color: var(--line-strong);
+  }
+
+  .work__item:hover .work__discipline {
+    color: var(--text);
+  }
+}
+
+/* ---------------------------------------------------------
+   TABLET — single column before the two-column layout
+   becomes too cramped.
+
+   The column wrappers lose their layout boxes so the six
+   articles can be placed in their natural numbered order.
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .work__grid {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
+  .work__col--left,
+  .work__col--right {
+    display: contents;
+  }
+
+  .work__item--architecture-studies {
+    order: 1;
+  }
+
+  .work__item--interior-environments {
+    order: 2;
+  }
+
+  .work__item--parametric-systems {
+    order: 3;
+  }
+
+  .work__item--fabrication-studies {
+    order: 4;
+  }
+
+  .work__item--glass-and-light {
+    order: 5;
+  }
+
+  .work__item--residential-form {
+    order: 6;
+  }
+  
+  .work__item--interior-studies {
+  order: 7;
+  }
+
+  .work__image {
+    object-position: var(--work-focal-tablet);
+  }
+
+  .work__title {
+    font-size: clamp(1.125rem, 4.9vw, 1.375rem);
+  }
+
+  .work__caption {
+    gap: 0.5rem;
+  }
+}
+
+/* ---------------------------------------------------------
+   MOBILE
+   --------------------------------------------------------- */
+
+@media (max-width: 430px) {
+  .work__grid {
+    gap: 2rem;
+  }
+
+  .work__image {
+    object-position: var(--work-focal-mobile);
+  }
+
+  .work__title {
+    font-size: clamp(1.0625rem, 5.4vw, 1.25rem);
+  }
+
+  .work__caption {
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .work__number {
+    min-width: 1.75rem;
+    height: 1.75rem;
+    padding: 0 0.4rem;
+    font-size: var(--size-work-number-sm);
+  }
+}
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .work__plate,
+  .work__discipline {
+    transition: none;
+  }
+}

@@ -1,0 +1,350 @@
+/**
+ * Journal, Contact and the colophon — the closing three.
+ *
+ * These share a job the other sections do not: they end the document. The same
+ * primitives are used, but the density deliberately drops off — wider fields of
+ * empty ground, fewer rules, longer type. An architecture portfolio should
+ * finish on a held breath rather than on a wall of content, so each of these
+ * sections spends vertical space it does not strictly need.
+ *
+ * The only structural departure is the colophon's own `min-height`, which is
+ * released from the full-viewport rule every content section keeps. That rule
+ * exists to give the scroll system depth while sections were placeholders; a
+ * footer that insists on a viewport of air is not restrained, it is simply
+ * empty, and the document already has five sections holding that height.
+ */
+
+/* ─── Journal ────────────────────────────────────────────────────────────── */
+
+.journal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+.journal__body {
+  border-top: 1px solid var(--line-soft);
+  padding-top: clamp(1.75rem, 1rem + 2.6vw, 3.25rem);
+}
+
+/* The empty state. Sized from the viewport rather than in fixed rem, so it
+   reads as a composed field at any width and never collapses to the height of
+   the text inside it — which is exactly the difference between a designed
+   pause and a leftover stub. */
+.journal__empty {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 0.6rem + 1vw, 1.5rem);
+  justify-content: center;
+  min-height: clamp(9rem, 5rem + 16vh, 15rem);
+  padding-bottom: clamp(1.5rem, 1rem + 2vw, 3rem);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.journal__emptyLabel {
+  margin: 0;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Kept a clear step below the section heading's own size. Both are uppercase
+   display type on the same screen, so the state has to sit under the heading to
+   leave the hierarchy unambiguous — but it still has to be big enough to read
+   as the section's content rather than as a caption on an empty box. */
+.journal__emptyTitle {
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.journal__emptyNote {
+  margin: 0;
+  font-size: var(--size-section-label);
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+
+/* ─── Journal, once real entries exist ───────────────────────────────────── */
+
+.journal__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line-soft);
+}
+
+.journal__entry {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr);
+  gap: clamp(1rem, 0.6rem + 1.4vw, 2.5rem);
+  align-items: baseline;
+  padding: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.journal__entryMeta {
+  margin: 0;
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.journal__entryTitle {
+  margin: 0;
+  font-size: clamp(1.05rem, 0.85rem + 0.8vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.journal__entrySummary {
+  margin: 0.7rem 0 0;
+  max-width: 52ch;
+  font-size: var(--size-lede);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* ─── Contact ────────────────────────────────────────────────────────────── */
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+}
+
+.contact__body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 1rem + 3vw, 5rem);
+  align-items: start;
+  border-top: 1px solid var(--line-soft);
+  /* The conclusion of the portfolio needs air beneath it more than it needs
+     another rule: the padding is what makes the last screen feel composed
+     rather than merely finished. */
+  padding-top: clamp(1.75rem, 1rem + 2.6vw, 3.25rem);
+  padding-bottom: clamp(3rem, 1.5rem + 6vw, 8rem);
+}
+
+.contact__channel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 0.7rem + 1vw, 1.75rem);
+}
+
+.contact__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contact__rule {
+  width: clamp(20px, 2vw, 34px);
+  height: 1px;
+  background: var(--line-strong);
+}
+
+/* The one real link in the section, so it carries the largest interactive type
+   on the page after the section headings. It sits on the opaque ground, so the
+   on-image halo is dropped — the outline from the global focus rule is what
+   makes it operable from a keyboard. */
+.contact__link {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.45em;
+  width: fit-content;
+  padding-bottom: 0.32em;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.6rem, 0.9rem + 2.6vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text);
+  transition: color var(--dur-micro) var(--ease-out),
+    border-color var(--dur-micro) var(--ease-out);
+}
+
+/* ─── Colophon ───────────────────────────────────────────────────────────── */
+
+/* Released from the full-viewport rule — see the note at the top of this file.
+   This is a footer, so it sits at the end of the document rather than centring
+   itself in a void it does not need. */
+.section--colophon {
+  min-height: auto;
+  justify-content: flex-end;
+}
+
+.colophon {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem);
+}
+
+.colophon__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem clamp(1.5rem, 1rem + 2vw, 3rem);
+  padding-bottom: clamp(1.5rem, 1rem + 1.8vw, 2.5rem);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* The lockup carries an on-image halo and a drop shadow, both of which only
+   earn their keep on the renders. On the opaque ground they just soften the
+   edges, so the same component is reused with that affordance removed. */
+.colophon .brand__mark,
+.colophon .brand__word {
+  filter: none;
+  text-shadow: none;
+}
+
+.colophon__brand {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.colophon__positioning {
+  margin: 0;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.colophon__base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem clamp(1.5rem, 1rem + 2vw, 3rem);
+}
+
+.colophon__index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.9rem, 0.6rem + 1.2vw, 1.75rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.colophon__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5em;
+  font-size: var(--size-section-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+.colophon__link:hover {
+  color: var(--text);
+}
+
+.colophon__linkNumber {
+  color: var(--accent);
+}
+
+.colophon__social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-size: var(--size-section-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+.colophon__social:hover {
+  color: var(--accent);
+}
+
+.colophon__icon {
+  width: 0.85em;
+  height: 0.85em;
+  flex: none;
+}
+
+/* ─── responsive ─────────────────────────────────────────────────────────── */
+
+/* Contact's two fields stack so the handle stays readable without the column
+   being squeezed to half a phone-width. */
+@media (max-width: 760px) {
+  .contact__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(2rem, 1.4rem + 3vw, 3rem);
+    padding-bottom: clamp(2.5rem, 2rem + 4vw, 4rem);
+  }
+
+  .journal__entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* The colophon's three groups become a single left-aligned column: a wrapped
+     flex row at this width would leave the section index orphaned on its own
+     line with no visual relationship to the brand above it. */
+  .colophon__lead,
+  .colophon__base {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 1.25rem;
+  }
+
+  .colophon__index {
+    gap: 0.9rem 1.25rem;
+  }
+
+  .journal__empty {
+    min-height: clamp(8rem, 5rem + 14vh, 12rem);
+  }
+}
+
+.contact__link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.contact__icon {
+  width: 0.55em;
+  height: 0.55em;
+  flex: none;
+}
+
+.contact__pending {
+  margin: 0;
+  font-size: var(--size-section-label);
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}

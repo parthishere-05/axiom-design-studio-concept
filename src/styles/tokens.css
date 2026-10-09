@@ -1,0 +1,140 @@
+/**
+ * AXIOM design tokens.
+ *
+ * The palette is tuned against the supplied renders: a near-black ground, warm
+ * ivory text, and a cream accent that picks up the golden illumination running
+ * through the architectural images. No further accent colour is introduced.
+ */
+
+/* ─── Instrument Sans (self-hosted) ──────────────────────────────────────────
+   One variable file per subset covers 400–700, so the four weights the site
+   actually uses are all real faces rather than synthesised ones. Served from
+   /fonts — there is no runtime request to a font CDN, and the two subsets are
+   the only splits Google's CSS API exposes for this family. */
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/instrument-sans-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* ground + ink */
+  --bg: #07090c;
+  --bg-deep: #04060a;
+  --ink: #111319;
+
+  /* type */
+  --text: #f4f1ec;
+  --text-muted: rgba(238, 239, 242, 0.68);
+  --text-faint: rgba(238, 239, 242, 0.44);
+
+  /* structure */
+  --line: rgba(255, 255, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.26);
+
+  /* surfaces + accent */
+  --accent: #e7d5c7;
+  --accent-soft: rgba(231, 213, 199, 0.55);
+  --surface: rgba(255, 255, 255, 0.035);
+  --surface-hover: rgba(255, 255, 255, 0.075);
+  --surface-glass: rgba(9, 11, 14, 0.55);
+
+  /* Interface type sits directly on the renders, so every UI label carries the
+     same soft dark halo. It is what keeps the schedule readable over a sunlit
+     wall without resorting to panels. */
+  --text-halo: 0 1px 12px rgba(7, 9, 12, 0.85), 0 0 3px rgba(7, 9, 12, 0.6);
+
+  /* typography */
+  --font-sans: 'Instrument Sans', 'Helvetica Neue', Helvetica, 'Segoe UI',
+    system-ui, -apple-system, Arial, sans-serif;
+  --font-display: var(--font-sans);
+
+  --size-label: 0.6875rem;
+  --size-small: 0.8125rem;
+  --size-body: 0.9375rem;
+  --size-lede: clamp(0.9375rem, 0.42vw + 0.82rem, 1.0625rem);
+  --size-display: clamp(2.3rem, 1rem + 5.4vw, 6.5rem);
+
+  /* The section scale. Deliberately separate from the hero's tokens rather than
+     an edit to them: the opening composition is verified at its own sizes, so
+     the sections below get their own ramp and the hero keeps its measured one.
+     The heading is the one number that matters — it has to read as editorial
+     display type while still sitting a clear step under the hero headline. */
+  --size-section-number: 0.9375rem;      /* 15px */
+  --size-section-label: 0.8125rem;       /* 13px */
+  --size-section-intro: clamp(1.0625rem, 0.95rem + 0.42vw, 1.25rem); /* 17–20px */
+  --size-work-title: clamp(1.25rem, 0.95rem + 1.1vw, 1.75rem);       /* 20–28px */
+  --size-work-meta: 0.8125rem;           /* 13px */
+  --size-nav: 0.8125rem;                 /* 13px */
+  --track-nav: 0.14em;
+
+  --track-label: 0.22em;
+  --track-display: -0.015em;
+
+  /* frame + rhythm */
+  --frame-inset: clamp(14px, 1.4vw + 8px, 30px);
+  --ui-inset: calc(var(--frame-inset) + clamp(10px, 1vw, 20px));
+
+  /* The measure every section shares, plus the two rhythm steps inside a section:
+     header → body, and each line of the header itself. All three scale with the
+     frame rather than being fixed values, so the section system tracks the page
+     at any width. The header step is the tighter of the two: the eyebrow is a
+     caption on its heading, not a freestanding element.
+
+     The measure itself is the frame width, capped rather than fluid. Below the
+     cap the content edge is the frame edge exactly — left and right, both
+     sides — which is what lets the Work grid reach the edge instead of leaving
+     a column of unused ground beside it. Above the cap it centres, because a
+     2560px sheet should not stretch a paragraph or a plate to 2400px. It used
+     to top out well under the frame width, which is where the dead right-hand
+     third came from. */
+  --section-measure: min(96rem, calc(100vw - 2 * var(--ui-inset)));
+  --section-gap: clamp(2.5rem, 1.6rem + 3.4vw, 5.5rem);
+  --section-header-gap: clamp(0.9rem, 0.6rem + 1.1vw, 1.9rem);
+
+  /* The step between a work plate and its caption. Tighter than the section
+     gap: a caption belongs to its image, so it sits closer than the section's
+     own parts do to each other. */
+  --work-caption-gap: clamp(0.85rem, 0.6rem + 0.8vw, 1.6rem);
+  --frame-chamfer: 24px;
+  --header-height: 2.75rem;
+  --rail-width: 10.5rem;
+  --rail-height: 2.25rem;
+  --dock-height: 3.25rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 160ms;
+  --dur-base: 320ms;
+  --dur-copy: 240ms;
+  --dur-slow: 760ms;
+  --dur-plate: 1100ms;
+
+  /* the copy and the detail plate use this to sit behind the frame and logo on
+     first paint; App clears it once the entrance sequence has played */
+  --intro-offset: 0ms;
+
+  /* depth */
+  --z-frame: 20;
+  --z-ui: 40;
+  --z-menu: 70;
+}

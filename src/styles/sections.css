@@ -1,0 +1,343 @@
+/**
+ * Document shell.
+ *
+ * The opening experience is `position: fixed` and occupies no space in the
+ * normal flow, so everything in this file exists to stand underneath it without
+ * touching it. Nothing here restyles the hero: the spacer simply reserves the
+ * room the fixed composition already occupies, and the sections paint over the
+ * hero once they reach the fold.
+ *
+ * Depth, from the tokens:
+ *   hero  z-index auto      the fixed opening experience
+ *   shell z-index 5         ← this file. Above the hero, below everything else
+ *   frame z-index 20        the persistent hairline drawing sheet
+ *   ui    z-index 40        header, and the rail/dock that retire on scroll
+ *   menu  z-index 70        the collapsed navigation panel
+ *
+ * The shell deliberately sits *below* the frame and the header. The frame is the
+ * page's governing idea — one drawing sheet the visitor moves through — so
+ * letting it persist across every section is free and reinforces the metaphor.
+ *
+ * ─── the section system ──────────────────────────────────────────────────────
+ *
+ * Sections continue the hero's language rather than starting a new one, so each
+ * level restates something the hero already establishes:
+ *
+ *   · the meta row is the hero eyebrow — same size, same tracking, same
+ *     accent-coloured index, same short dash
+ *   · the heading is the hero headline's face, weight, tracking and case at one
+ *     step down the scale, so it reads as large editorial type without ever
+ *     competing with the opening composition
+ *   · the intro is the hero lede, one measure wider
+ *
+ * The one deliberate departure: hero type carries `--text-halo` because it sits
+ * on photography. Section type sits on an opaque ground, where a soft dark
+ * shadow is only mud. Nothing here adds a colour, a shadow or a radius either —
+ * the section language is the hero's, minus what only works over an image.
+ *
+ * Section padding, minimum height and top rule are unchanged from the document
+ * shell: they are what makes an anchored section clear the fixed header and
+ * gives the page its scroll depth.
+ */
+
+html {
+  scroll-behavior: smooth;
+  /* the header is fixed, so an anchored section must clear it */
+  scroll-padding-top: calc(var(--ui-inset) + var(--header-height) + 1.5rem);
+}
+
+/* Opaque, so the fixed hero is genuinely covered rather than merely behind.
+   `pointer-events: none` on the shell and `auto` on the body is the same
+   reasoning as the opening spacer above it, one level up: the shell itself is a
+   positioned box spanning the whole document, so its own hit area sat over the
+   hero and swallowed the clicks the spacer had just let through. Only the part
+   of the shell that actually holds content should be a hit target. */
+.shell {
+  position: relative;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* One viewport of ordinary flow, so the first section starts exactly where the
+   fixed hero ends. Deliberately transparent: the hero shows through it.
+
+   `pointer-events: none` is load-bearing, not tidiness. `.shell` stacks at
+   z-index 5 and the hero paints below it, so this empty spacer was covering the
+   whole opening viewport and swallowing every click aimed at the hero's copy —
+   the CTAs rendered, hovered, and then did nothing. The spacer carries no
+   content of its own, so it must let pointer events fall through to the
+   composition underneath. The sentinel is an IntersectionObserver target and
+   never needed them. */
+.shell__opening {
+  position: relative;
+  height: 100svh;
+  pointer-events: none;
+}
+
+/* The scroll signal — see useScrollPastHero. */
+.shell__sentinel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+}
+
+/* Opaque, so the fixed hero is genuinely covered rather than merely behind.
+   `pointer-events: auto` restores hit-testing for the part of the shell that
+   actually holds content — the shell itself is a positioned box spanning the
+   whole document, so its own hit area sat over the hero and swallowed the
+   clicks the opening spacer had just let through. Only content should be a
+   hit target; the transparent chrome must stay out of the way. */
+.shell__body {
+  background: var(--bg-deep);
+  pointer-events: auto;
+}
+
+/* ─── sections ────────────────────────────────────────────────────────────── */
+
+/* Placeholder frame for the section bodies. Sized to a full viewport so the
+   scroll depth the hero needs can actually be exercised. */
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.1rem;
+  min-height: 100svh;
+  padding: calc(var(--ui-inset) + var(--header-height) + 2.5rem) var(--ui-inset)
+    calc(var(--ui-inset) + var(--header-height) + 2.5rem);
+  border-top: 1px solid var(--line-soft);
+}
+
+/* ─── section primitives ───────────────────────────────────────────────────── */
+
+/* The scroll container. Its measure is the one thing every section shares, so
+   content can never drift out of alignment no matter how long a section grows.
+   `padding-inline` is left to `.section`: the frame insets are already applied
+   there, and stacking a second inset here would double them.
+
+   The rhythm lives here rather than on `.section` because the header and the
+   body are siblings *inside* this element — a gap on the section would only
+   ever separate one child from another section, never the header from its body. */
+.section__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-gap);
+  width: 100%;
+  max-width: var(--section-measure);
+  /* Centred so the measure is symmetric about the sheet. Without it the max
+     width simply left the remainder stacked on the right, which is what made
+     the composition look like it ran out of content. */
+  margin-inline: auto;
+}
+
+/* Generous top spacing, clearing the fixed header the same way the shell
+   placeholder does, and a floor deep enough to be scrolled through. `gap` is not
+   needed here: everything in a section is inside `.section__inner`, which owns
+   the rhythm. */
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  padding: calc(var(--ui-inset) + var(--header-height) + 2.5rem) var(--ui-inset)
+    calc(var(--ui-inset) + var(--header-height) + 2.5rem);
+  border-top: 1px solid var(--line-soft);
+}
+
+/* ─── section header ────────────────────────────────────────────────────────── */
+
+/* The header's own rhythm: eyebrow → heading → intro. This is separate from
+   `--section-gap`, which spaces the header from the section *body*. The value is
+   smaller on purpose — the eyebrow is a caption on the heading, not a
+   freestanding element, so it sits closer than the body does. */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-header-gap);
+}
+
+/* The hero eyebrow, restated: index, short dash, label. Tracking is shared with
+   `.hero__eyebrow` so the two read as one voice; the sizes step up from the
+   hero's caption scale, because these labels sit on an opaque ground with no
+   on-image halo to make up for being small. */
+.section-header__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: var(--size-section-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.section-header__number {
+  font-size: var(--size-section-number);
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The same measuring dash as `.hero__eyebrowRule`. */
+.section-header__rule {
+  width: clamp(26px, 4vw, 54px);
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.section-header__label {
+  color: var(--text-muted);
+}
+
+/* The editorial display size for everything below the opening experience.
+   Sized against the hero rather than in isolation: at 1440 the hero headline
+   lands near 104px and this lands near 86px, so a section heading is clearly
+   large and clearly not the loudest thing on the page. Breakpoint steps are
+   explicit because one clamp cannot serve a 342px phone and a 1440px sheet
+   with the same optical weight. */
+.section-header__heading {
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 6vw, 7rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: var(--track-display);
+  text-transform: uppercase;
+  color: var(--text);
+  /* `balance` keeps a two-line heading optically even instead of leaving a
+     stranded last word. Supported everywhere current; ignored cleanly where not. */
+  text-wrap: balance;
+}
+
+.section-header__intro {
+  max-width: 54ch;
+  font-size: var(--size-section-intro);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.section__note {
+  font-size: var(--size-small);
+  color: var(--text-faint);
+}
+
+.section--colophon {
+  min-height: auto;
+  gap: 0.4rem;
+  border-top-color: var(--line);
+}
+
+/* ─── section responsive ────────────────────────────────────────────────────────
+   Three states, matching the page's existing breakpoints. The heading is driven
+   by a clamp rather than stepped per breakpoint, so these rules only adjust the
+   things a clamp cannot express: composition and measure.
+
+   These rules touch section primitives exclusively. No hero selector appears in
+   this block, so the opening experience is untouched at every width. */
+
+/* Tablet and below: the index row tightens so it never wraps beside the label,
+   and the heading drops to the tablet ramp — 6vw of a 1024px sheet is still
+   display scale, but the desktop maximum would run the lines into the frame. */
+@media (max-width: 1100px) {
+  .section-header__meta {
+    gap: 0.75rem;
+  }
+
+  .section-header__heading {
+    font-size: clamp(3rem, 6vw, 5rem);
+    line-height: 0.94;
+  }
+}
+
+/* Mobile: the system stacks on one column by default, so the work here is to
+   keep the meta compact, keep the measure close to the screen, and stop the
+   heading from crowding the frame. The clamp already lands the heading on its
+   own minimum here; these are the surrounding margins. */
+@media (max-width: 640px) {
+  .section {
+    /* Less of a void above the heading on a short screen, where the extra
+       breathing room would read as an accident rather than as composition. */
+    padding-top: calc(var(--ui-inset) + var(--header-height) + 1.75rem);
+    padding-bottom: calc(var(--ui-inset) + var(--header-height) + 1.75rem);
+  }
+
+  .section-header__meta {
+    gap: 0.6rem;
+  }
+
+  .section-header__rule {
+    width: clamp(22px, 8vw, 34px);
+  }
+
+  .section-header__heading {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    line-height: 0.95;
+  }
+
+  .section-header__intro {
+    max-width: 40ch;
+    font-size: clamp(0.9375rem, 3.6vw, 1.125rem);
+    line-height: 1.5;
+  }
+}
+
+/* ─── reveal foundation ─────────────────────────────────────────────────────────
+   A later phase reveals section content on scroll. This block is the whole of
+   that feature today, and it is deliberately inert: the hidden state hangs off
+   an explicit `[data-reveal-state='pending']` attribute that nothing sets yet, so
+   every section renders fully visible and no content can be stranded invisible
+   by an observer that never arrives.
+
+   The later phase's job is two lines: set the attribute when the element
+   enters view, remove it when it leaves. The timing is already the page's. */
+[data-reveal] {
+  transition: opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+/* The held-back state. Not applied until a reveal observer sets the attribute. */
+[data-reveal][data-reveal-state='pending'] {
+  opacity: 0;
+  transform: translateY(0.75rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none;
+  }
+
+  /* With motion declined there is nothing to animate *from*, so the held state
+     must not be a thing a future observer can leave content stuck in. */
+  [data-reveal][data-reveal-state='pending'] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─── hero chrome retirement ───────────────────────────────────────────────── */
+
+/* Past the opening experience the chapter rail and the bottom dock describe a
+   journey that is no longer happening, so they leave. `visibility` is used
+   rather than `opacity` because both elements carry an entrance animation whose
+   `both` fill would otherwise win the cascade and keep them painted; it also
+   removes them from the tab order and the accessibility tree in one step.
+
+   The transition is zeroed for the same reason. Without it the elements spend
+   their 480ms fade *visible* over the arriving section — and the visibility
+   flip lands mid-read, which is what left rail numbers stamped across the
+   Studio heading in screenshots. The hero is a fixed overlay being covered, not
+   a page being left, so its chrome should be gone the moment the sections own
+   the viewport. */
+.app[data-scroll-past-hero='true'] .rail,
+.app[data-scroll-past-hero='true'] .dock {
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+
+/* The hero's own detail plate needs no rule of its own: it lives inside the
+   fixed hero, so the opaque shell covers it the moment the sections arrive. */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
